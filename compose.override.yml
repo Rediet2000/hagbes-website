@@ -1,0 +1,15 @@
+# Local development override (Windows / Docker Desktop).
+# The base compose.yml mounts server paths (/opt/website/...) that don't exist here.
+# This override points the webroot at the local ./html folder and stores the
+# database in a named volume (robust on Windows, avoids bind-mount permission issues).
+services:
+  wordpress:
+    volumes:
+      - ./html:/var/www/html
+
+  db:
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

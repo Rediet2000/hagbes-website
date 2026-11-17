@@ -1,0 +1,65 @@
+/* =====================================================================
+   GWM Vehicle (Dark) — HAGBES
+   Minimal wrapper styling for the Themify-built vehicle pages once the
+   Astra HAGBES header/footer are removed. The model layout itself is
+   styled by Themify; this only sets a dark page frame + GWM footer.
+   ===================================================================== */
+
+body.gwm-vehicle-body {
+	margin: 0;
+	background: #0a0b0d;
+	color: #f4f6f7;
+	font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+/* Keep Themify content full-bleed without Astra's wrapper gaps. */
+body.gwm-vehicle-body .themify_builder_content { margin: 0 auto; }
+body.gwm-vehicle-body .entry-content { margin: 0; }
+
+/* Safety net: give Themify text-module headings/paragraphs sane rhythm so
+   they never collide (fixes the ORA "HELLO TOMORROW" heading overlap). */
+body.gwm-vehicle-body .tb_text_wrap h1,
+body.gwm-vehicle-body .tb_text_wrap h2,
+body.gwm-vehicle-body .tb_text_wrap h3,
+body.gwm-vehicle-body .tb_text_wrap h4 { line-height: 1.2; margin: 0 0 .4em; }
+body.gwm-vehicle-body .tb_text_wrap p { margin: 0 0 1em; line-height: 1.6; }
+
+/* ---- slim GWM footer ---- */
+.gwm-vfoot {
+	background: #060708;
+	border-top: 1px solid rgba(255, 255, 255, .12);
+	padding: 34px 0;
+}
+.gwm-vfoot__inner {
+	max-width: 1240px;
+	margin: 0 auto;
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 18px;
+}
+.gwm-vfoot__logo { height: 26px; width: auto; }
+.gwm-vfoot__nav { display: flex; flex-wrap: wrap; gap: 22px; }
+.gwm-vfoot__nav a {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: rgba(244, 246, 247, .64);
+	text-decoration: none;
+}
+.gwm-vfoot__nav a:hover { color: #fff; }
+.gwm-vfoot__copy {
+	width: 100%;
+	margin: 4px 0 0;
+	font-size: 12.5px;
+	color: rgba(244, 246, 247, .4);
+}
+
+@media (max-width: 600px) {
+	.gwm-vfoot__inner { flex-direction: column; align-items: flex-start; }
+}

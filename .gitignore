@@ -1,0 +1,60 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+
+# Claude local settings
+.claude/settings.local.json
+
+# Archives & extraction leftovers
+*.zip
+__MACOSX/
+
+# Database dumps (large, contain user data — ship out-of-band)
+*.sql
+*.sql.gz
+
+# Secrets (wp-config.php is regenerated from wp-config-docker.php on boot)
+html/wp-config.php
+.env
+
+# Large WordPress media (managed via the media library)
+html/wp-content/uploads/
+
+# WordPress cache / temp / logs
+html/wp-content/cache/
+html/wp-content/tf_cache_config/
+html/wp-content/bfu-temp/
+html/wp-content/upgrade/
+html/wp-content/upgrade-temp-backup/
+*.log
+
+# Stray legacy copy (the live site lives under html/)
+/wp-content/
+
+# =====================================================================
+# Reproducible — NOT necessary to migrate / version
+# ---------------------------------------------------------------------
+# The official `wordpress` Docker image re-populates WordPress core on boot,
+# so core files don't belong in the repo. KEPT on purpose: the custom
+# astra-child theme, the astra parent theme, and ALL plugins (several are
+# premium and cannot be re-downloaded).
+# =====================================================================
+
+# WordPress core
+html/wp-admin/
+html/wp-includes/
+html/wp-*.php
+html/index.php
+html/xmlrpc.php
+html/license.txt
+html/readme.html
+html/wp-config-sample.php
+# ...but keep the Docker config template that generates wp-config.php
+!html/wp-config-docker.php
+
+# Default bundled themes (reinstallable; the site runs on astra / astra-child)
+html/wp-content/themes/twenty*

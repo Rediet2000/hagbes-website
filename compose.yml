@@ -1,0 +1,67 @@
+# All tunable values come from .env (see .env.example).
+# ${VAR:-default} keeps sensible fallbacks if .env is missing.
+services:
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: wordpress
+    restart: unless-stopped
+    ports:
+      - "${WORDPRESS_PORT:-8080}:80"
+    volumes:
+      - ${APP_DIR:-/opt/website}/html:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress_password}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX:-wp_}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-1024M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-128M}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-128M}
+    depends_on:
+      - db
+    deploy:
+      resources:
+        limits:
+          memory: ${WORDPRESS_MEM_LIMIT:-2g}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  db:
+    image: mariadb:10.11
+    container_name: db
+    restart: unless-stopped
+    volumes:
+      - ${APP_DIR:-/opt/website}/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-strong_root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress}
+      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wordpress_password}
+    command: >
+      --max_allowed_packet=256M
+      --innodb-buffer-pool-size=512M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "${PHPMYADMIN_PORT:-8180}:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-strong_root_password}
+    depends_on:
+      - db
+
+networks:
+  default:
+    name: ${DOCKER_NETWORK:-wordpress_network}
